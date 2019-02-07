@@ -9,13 +9,19 @@
   (interactive)
   (newline)
   (insert (current-time-string))
-  (comment-line 1))
+  (timed-edit-mode--comment-current-line)
+  (newline))
+
+(defun timed-edit-mode--comment-current-line ()
+  "Comment current line."
+  (save-excursion (comment-line 1))
+  (move-end-of-line 1))
 
 (define-minor-mode timed-edit-mode
   "timed-edit-mode allows inserting a timestamp before inserting a newline."
-  :lighter " Timed"
+  :lighter " Td"
   :keymap (let ((map (make-sparse-keymap)))
-            (define-key map "\n" 'timed-edit-mode-newline)
+            (define-key map (kbd "RET") 'timed-edit-mode-newline)
             map))
 
 
