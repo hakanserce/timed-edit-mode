@@ -1,0 +1,11 @@
+#+STARTUP: logdrawer logrefile
+* Introduction
+~timed-edit-mode~ is an emacs minor mode for capturing timing information during editing. 
+
+* TODO Installation
+TBD
+
+* TODO Usage
+Enable the timed-edit-mode (~M-x timed-edit-mode~, or bind a key to this). Then every time you press ~RET~ a comment with timing information is recorded.
+
+
