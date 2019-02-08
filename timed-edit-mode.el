@@ -4,18 +4,32 @@
 
 ;;; Code:
 
+;;; TODO: Make time format a parameter
+;;; TODO: Make a shortcut for temporarily enabling/disabling it (or maybe just let the user enable-disable the minor mode by their own keybinding
+
+
+
 (defun timed-edit-mode-newline ()
   "Insert a newline, but before the newline add the timing information."
   (interactive)
-  (newline)
+  (newline-and-indent)
+  (comment-dwim nil)
   (insert (current-time-string))
-  (timed-edit-mode--comment-current-line)
-  (newline))
+  (move-end-of-line nil)
+  (newline-and-indent)
+  (set-transient-map
+   (let ((map (make-sparse-keymap)))
+     (define-key map (kbd "RET") 'timed-edit-mode--newline-again)
+     map)
+   t))
 
-(defun timed-edit-mode--comment-current-line ()
-  "Comment current line."
-  (save-excursion (comment-line 1))
-  (move-end-of-line 1))
+(defun timed-edit-mode--newline-again()
+  "Move the timed line with each repetitive newline."
+  (interactive)
+  (save-excursion
+    (forward-line -1)
+    (newline-and-indent)))
+                               
 
 (define-minor-mode timed-edit-mode
   "timed-edit-mode allows inserting a timestamp before inserting a newline."
@@ -23,8 +37,6 @@
   :keymap (let ((map (make-sparse-keymap)))
             (define-key map (kbd "RET") 'timed-edit-mode-newline)
             map))
-
-
 
 
 
